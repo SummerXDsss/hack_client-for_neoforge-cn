@@ -29,7 +29,6 @@ public final class ModuleRegistry {
 		register("glide", "glide_toggle", Glide::isEnabled, Glide::toggle);
 		register("air_place", "airplace_toggle", AirPlace::isEnabled, AirPlace::toggle);
 		register("boat_fly", "boatfly_toggle", BoatFly::isEnabled, BoatFly::toggle);
-		register("health_tags", "healthtags_toggle", HealthTagsMain::isEnabled, HealthTagsMain::toggle);
 	}
 
 	private static void register(String id, String actionKey, ModuleToggle isEnabled, ModuleAction toggle) {

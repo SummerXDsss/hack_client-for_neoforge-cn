@@ -25,7 +25,6 @@ public final class NeoForgeConfigManager {
         PROPS.setProperty("fullbright.enabled", "false");
         PROPS.setProperty("glide.enabled", "false");
         PROPS.setProperty("godmode.enabled", "false");
-        PROPS.setProperty("healthtags.enabled", "false");
         PROPS.setProperty("hud.input.enabled", "false");
         PROPS.setProperty("jesus.enabled", "false");
         PROPS.setProperty("jetpack.enabled", "false");
