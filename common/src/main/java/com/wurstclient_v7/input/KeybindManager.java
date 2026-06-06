@@ -158,9 +158,9 @@ public final class KeybindManager {
                 return false;
         }
         if (kb.isMouse) {
-            glfwDown = (GLFW.glfwGetMouseButton(window, kb.key) == 1);
+            return GLFW.glfwGetMouseButton(window, kb.key) == GLFW.GLFW_PRESS;
         } else {
-            glfwDown = (GLFW.glfwGetKey(window, kb.key) == 1);
+            glfwDown = (GLFW.glfwGetKey(window, kb.key) == GLFW.GLFW_PRESS);
         }
         boolean icDown = InputConstants.isKeyDown(window, kb.key);
         if (glfwDown != icDown)

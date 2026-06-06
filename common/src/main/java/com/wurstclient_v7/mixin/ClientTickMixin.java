@@ -179,7 +179,7 @@ public final class ClientTickMixin {
         prevSafeWalkPressed = swPressed;
 
         // Mouse left click handling (for autoattack)
-        boolean leftPressed = InputConstants.isKeyDown(window, GLFW.GLFW_MOUSE_BUTTON_LEFT);
+        boolean leftPressed = GLFW.glfwGetMouseButton(window, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;
         if (leftPressed && !prevLeftPressed) {
             AutoAttack.onLeftClick();
         }

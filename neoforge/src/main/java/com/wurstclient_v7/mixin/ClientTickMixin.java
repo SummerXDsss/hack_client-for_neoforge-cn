@@ -4,7 +4,7 @@ import com.wurstclient_v7.client.LocalControlPanelServer;
 import com.wurstclient_v7.feature.KillAura;
 import com.wurstclient_v7.input.KeybindManager;
 import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.platform.InputConstants;
+import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -186,7 +186,7 @@ public class ClientTickMixin {
         prevGodModePressed = godPressed;
 
         // Mouse left click handling (for autoattack)
-        boolean leftPressed = InputConstants.isKeyDown(window, org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT);
+        boolean leftPressed = GLFW.glfwGetMouseButton(window, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;
         if (leftPressed && !prevLeftPressed) {
             com.wurstclient_v7.feature.AutoAttack.onLeftClick();
         }
