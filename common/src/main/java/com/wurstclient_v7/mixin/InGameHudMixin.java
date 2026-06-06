@@ -41,41 +41,41 @@ public class InGameHudMixin {
         guiGraphics.drawString(mc.font, I18n.get(WATERMARK_KEY), x, y, 0xFFFFFFFF, true);
         y += 12;
 
-        // Input HUD
-        long window = mc.getWindow().getWindow();
-        int pressedColor = 0x59FF0000; // translucent red
-        int idleColor = 0x59808080;    // translucent gray
+        if (ConfigManager.getBoolean("hud.input.enabled", false)) {
+            long window = mc.getWindow().getWindow();
+            int pressedColor = 0x59FF0000;
+            int idleColor = 0x59808080;
 
-        int baseX = 10;
-        int baseY = 80;
-        int boxW = 40;
-        int boxH = 20;
-        int spacing = 5;
+            int baseX = 10;
+            int baseY = 80;
+            int boxW = 40;
+            int boxH = 20;
+            int spacing = 5;
 
 // W on top
-        drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_FORWARD_KEY), GLFW_KEY_W,
-                baseX + boxW + spacing, baseY, false, pressedColor, idleColor);
+            drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_FORWARD_KEY), GLFW_KEY_W,
+                    baseX + boxW + spacing, baseY, false, pressedColor, idleColor);
 
 // A S D row
-        drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_LEFT_KEY), GLFW_KEY_A,
-                baseX, baseY + boxH + spacing, false, pressedColor, idleColor);
+            drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_LEFT_KEY), GLFW_KEY_A,
+                    baseX, baseY + boxH + spacing, false, pressedColor, idleColor);
 
-        drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_BACK_KEY), GLFW_KEY_S,
-                baseX + boxW + spacing, baseY + boxH + spacing, false, pressedColor, idleColor);
+            drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_BACK_KEY), GLFW_KEY_S,
+                    baseX + boxW + spacing, baseY + boxH + spacing, false, pressedColor, idleColor);
 
-        drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_RIGHT_KEY), GLFW_KEY_D,
-                baseX + (boxW + spacing) * 2, baseY + boxH + spacing, false, pressedColor, idleColor);
+            drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_RIGHT_KEY), GLFW_KEY_D,
+                    baseX + (boxW + spacing) * 2, baseY + boxH + spacing, false, pressedColor, idleColor);
 
 // SPACE below
-        drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_JUMP_KEY), GLFW_KEY_SPACE,
-                baseX, baseY + (boxH + spacing) * 2, false, pressedColor, idleColor);
+            drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_JUMP_KEY), GLFW_KEY_SPACE,
+                    baseX, baseY + (boxH + spacing) * 2, false, pressedColor, idleColor);
 
-        //MOUSE BUTTONS
-        drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_MOUSE_LEFT_KEY), GLFW_MOUSE_BUTTON_LEFT,
-                baseX + (boxW + spacing) * 3, baseY, true, pressedColor, idleColor);
+            drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_MOUSE_LEFT_KEY), GLFW_MOUSE_BUTTON_LEFT,
+                    baseX + (boxW + spacing) * 3, baseY, true, pressedColor, idleColor);
 
-        drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_MOUSE_RIGHT_KEY), GLFW_MOUSE_BUTTON_RIGHT,
-                baseX + (boxW + spacing) * 3, baseY + boxH + spacing, true, pressedColor, idleColor);
+            drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_MOUSE_RIGHT_KEY), GLFW_MOUSE_BUTTON_RIGHT,
+                    baseX + (boxW + spacing) * 3, baseY + boxH + spacing, true, pressedColor, idleColor);
+        }
 
         for (ModuleRegistry.Module module : ModuleRegistry.MODULES.values()) {
             if (module.isEnabled()) {

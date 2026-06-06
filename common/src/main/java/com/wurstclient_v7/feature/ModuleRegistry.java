@@ -24,7 +24,6 @@ public final class ModuleRegistry {
 		register("tracers", "tracers_toggle", Tracers::isEnabled, Tracers::toggle);
 		register("andromeda_bridge", "andromeda_toggle", AndromedaBridge::isEnabled, AndromedaBridge::toggle);
 		register("safe_walk", "safewalk_toggle", SafeWalk::isEnabled, SafeWalk::toggle);
-		register("lsd", "lsd_toggle", LsdHack::isEnabled, LsdHack::toggle);
 	}
 
 	private static void register(String id, String actionKey, ModuleToggle isEnabled, ModuleAction toggle) {

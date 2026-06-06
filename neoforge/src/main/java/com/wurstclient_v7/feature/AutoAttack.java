@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 
 public final class AutoAttack {
     private static volatile boolean enabled = NeoForgeConfigManager.getBoolean("autoattack.enabled", false);
-    private static int range = 6;
+    private static int range = (int)Math.round(NeoForgeConfigManager.getDouble("autoattack.range", 6));
     private static long lastTick = 0;
     private static int delayTicks = 2;
 
@@ -24,7 +24,12 @@ public final class AutoAttack {
         NeoForgeConfigManager.setBoolean("autoattack.enabled", enabled);
     }
 
-    public static void setRange(int r) { range = r; }
+    public static int getRange() { return range; }
+
+    public static void setRange(int r) {
+        range = Math.max(1, Math.min(10, r));
+        NeoForgeConfigManager.setDouble("autoattack.range", range);
+    }
 
     // Triggered on a left click event (client-side)
     public static void onLeftClick() {

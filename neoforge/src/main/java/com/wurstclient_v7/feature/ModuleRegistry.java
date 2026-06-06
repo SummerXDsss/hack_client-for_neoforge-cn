@@ -25,7 +25,6 @@ public final class ModuleRegistry {
 		register("safe_walk", "safewalk_toggle", SafeWalk::isEnabled, SafeWalk::toggle);
 		register("god_mode", "godmode_toggle", GodMode::isEnabled, GodMode::toggle);
 		register("freecam", "freecam_toggle", Freecam::isEnabled, Freecam::toggle);
-		register("lsd", "lsd_toggle", LsdHack::isEnabled, LsdHack::toggle);
 		register("jesus", "jesus_toggle", JesusHack::isEnabled, JesusHack::toggle);
 		register("glide", "glide_toggle", Glide::isEnabled, Glide::toggle);
 		register("air_place", "airplace_toggle", AirPlace::isEnabled, AirPlace::toggle);

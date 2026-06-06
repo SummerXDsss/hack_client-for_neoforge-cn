@@ -10,11 +10,18 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public final class Nuker {
     private static boolean enabled = NeoForgeConfigManager.getBoolean("nuker.enabled", false);
-    private static int range = 4;
+    private static int range = (int)Math.round(NeoForgeConfigManager.getDouble("nuker.range", 4));
 
     private Nuker() { }
 
     public static boolean isEnabled() { return enabled; }
+
+    public static int getRange() { return range; }
+
+    public static void setRange(int value) {
+        range = Math.max(1, Math.min(8, value));
+        NeoForgeConfigManager.setDouble("nuker.range", range);
+    }
 
     public static void toggle() {
         enabled = !enabled;

@@ -8,13 +8,20 @@ import net.minecraft.world.entity.LivingEntity;
 
 public final class KillAura {
     private static boolean enabled = ConfigManager.getBoolean("killaura.enabled", false);
-    private static double range = 4.5; // Standard reach distance
+    private static double range = ConfigManager.getDouble("killaura.range", 4.5);
     private static int delayTicks = 10; // Simple attack speed (0.5 seconds)
     private static int timer = 0;
 
     private KillAura() { }
 
     public static boolean isEnabled() { return enabled; }
+
+    public static double getRange() { return range; }
+
+    public static void setRange(double value) {
+        range = Math.max(1.0, Math.min(8.0, value));
+        ConfigManager.setDouble("killaura.range", range);
+    }
 
     public static void toggle() {
         enabled = !enabled;

@@ -19,6 +19,14 @@ public final class SpeedHack {
         System.out.println("SpeedHack: " + (enabled ? "ON" : "OFF"));
     }
 
+    public static double getMultiplier() {
+        return ConfigManager.getDouble("speed.multiplier", 1.5);
+    }
+
+    public static void setMultiplier(double value) {
+        ConfigManager.setDouble("speed.multiplier", Math.max(1.0, Math.min(5.0, value)));
+    }
+
     public static void onClientTick() {
         if (!enabled) return;
 
@@ -31,7 +39,7 @@ public final class SpeedHack {
         boolean isPressingMove = player.xxa != 0 || player.zza != 0;
 
         if (isPressingMove && player.onGround()) {
-            double multiplier = ConfigManager.getDouble("speed.multiplier", 1.5);
+            double multiplier = getMultiplier();
 
             // Get current movement
             Vec3 motion = player.getDeltaMovement();

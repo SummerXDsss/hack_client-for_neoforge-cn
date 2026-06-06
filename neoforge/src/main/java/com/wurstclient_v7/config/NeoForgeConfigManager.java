@@ -17,6 +17,7 @@ public final class NeoForgeConfigManager {
         PROPS.setProperty("airplace.enabled", "false");
         PROPS.setProperty("andromeda.enabled", "false");
         PROPS.setProperty("autoattack.enabled", "false");
+        PROPS.setProperty("autoattack.range", "6");
         PROPS.setProperty("boatfly.enabled", "false");
         PROPS.setProperty("esp.enabled", "false");
         PROPS.setProperty("flight.enabled", "false");
@@ -25,12 +26,14 @@ public final class NeoForgeConfigManager {
         PROPS.setProperty("glide.enabled", "false");
         PROPS.setProperty("godmode.enabled", "false");
         PROPS.setProperty("healthtags.enabled", "false");
+        PROPS.setProperty("hud.input.enabled", "false");
         PROPS.setProperty("jesus.enabled", "false");
         PROPS.setProperty("jetpack.enabled", "false");
         PROPS.setProperty("killaura.enabled", "false");
-        PROPS.setProperty("lsd.enabled", "false");
+        PROPS.setProperty("killaura.range", "4.5");
         PROPS.setProperty("nofall.enabled", "false");
         PROPS.setProperty("nuker.enabled", "false");
+        PROPS.setProperty("nuker.range", "4");
         PROPS.setProperty("safewalk.enabled", "false");
         PROPS.setProperty("speed.enabled", "false");
         PROPS.setProperty("spider.enabled", "false");
