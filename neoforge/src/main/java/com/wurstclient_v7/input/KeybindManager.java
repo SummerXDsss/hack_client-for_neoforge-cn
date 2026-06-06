@@ -140,6 +140,8 @@ public final class KeybindManager {
         Keybind kb = getKeybind(action);
         if (kb == null)
             return false;
+        if (kb.isMouse && kb.key == GLFW.GLFW_MOUSE_BUTTON_LEFT && action.endsWith("_toggle"))
+            return false;
         if ((kb.modifiers & 0x2) != 0) {
             boolean ctrl = (InputConstants.isKeyDown(window, 341) || InputConstants.isKeyDown(window, 345));
             if (!ctrl)

@@ -19,7 +19,10 @@ public final class AutoAttack {
 
     public static boolean isEnabled() { return enabled; }
 
-    public static void toggle() { enabled = !enabled; }
+    public static void toggle() {
+        enabled = !enabled;
+        NeoForgeConfigManager.setBoolean("autoattack.enabled", enabled);
+    }
 
     public static void setRange(int r) { range = r; }
 
