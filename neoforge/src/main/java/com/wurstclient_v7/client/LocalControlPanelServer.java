@@ -216,11 +216,11 @@ public final class LocalControlPanelServer {
             appendModuleJson(json, module);
         }
         json.append("],\"settings\":[");
-        appendBooleanSetting(json, true, INPUT_HUD_KEY, "Input HUD", NeoForgeConfigManager.getBoolean(INPUT_HUD_KEY, false));
-        appendNumberSetting(json, false, "speed.multiplier", "Speed multiplier", SpeedHack.getMultiplier(), 1.0, 5.0, 0.1);
-        appendNumberSetting(json, false, "killaura.range", "KillAura range", KillAura.getRange(), 1.0, 8.0, 0.1);
-        appendNumberSetting(json, false, "autoattack.range", "AutoAttack range", AutoAttack.getRange(), 1.0, 10.0, 1.0);
-        appendNumberSetting(json, false, "nuker.range", "Nuker range", Nuker.getRange(), 1.0, 8.0, 1.0);
+        appendBooleanSetting(json, true, INPUT_HUD_KEY, "按键显示", NeoForgeConfigManager.getBoolean(INPUT_HUD_KEY, false));
+        appendNumberSetting(json, false, "speed.multiplier", "速度倍率", SpeedHack.getMultiplier(), 1.0, 5.0, 0.1);
+        appendNumberSetting(json, false, "killaura.range", "KillAura 范围", KillAura.getRange(), 1.0, 8.0, 0.1);
+        appendNumberSetting(json, false, "autoattack.range", "自动攻击范围", AutoAttack.getRange(), 1.0, 10.0, 1.0);
+        appendNumberSetting(json, false, "nuker.range", "自动挖掘范围", Nuker.getRange(), 1.0, 8.0, 1.0);
         json.append("]}");
         return json.toString();
     }
@@ -371,7 +371,7 @@ public final class LocalControlPanelServer {
                 <head>
                   <meta charset="utf-8">
                   <meta name="viewport" content="width=device-width, initial-scale=1">
-                  <title>MHC Control Panel</title>
+                  <title>MHC 控制面板</title>
                   <script src="https://cdn.tailwindcss.com"></script>
                   <link rel="stylesheet" href="https://unpkg.com/tdesign-vue-next@1.20.1/dist/tdesign.min.css">
                   <script src="https://unpkg.com/vue@3.5.35/dist/vue.global.prod.js"></script>
@@ -391,14 +391,14 @@ public final class LocalControlPanelServer {
                       <section v-if="!unlocked" class="mx-auto flex min-h-[80vh] w-full max-w-md items-center">
                         <t-card :bordered="true" class="w-full shadow-2xl shadow-black/30">
                           <div class="mb-6">
-                            <div class="mb-2 text-xs font-semibold uppercase tracking-wider text-mhc-gold">MHC Local Panel</div>
-                            <h1 class="text-2xl font-bold tracking-normal text-white">Access Control</h1>
-                            <p class="mt-2 text-sm leading-6 text-slate-400">Enter the local control password to manage modules.</p>
+                            <div class="mb-2 text-xs font-semibold uppercase tracking-wider text-mhc-gold">MHC 本地面板</div>
+                            <h1 class="text-2xl font-bold tracking-normal text-white">访问验证</h1>
+                            <p class="mt-2 text-sm leading-6 text-slate-400">输入本地控制密码来管理模块。</p>
                           </div>
-                          <t-input v-model="password" type="password" placeholder="Password" clearable class="mb-4" @enter="unlock"></t-input>
-                          <t-button theme="primary" block :loading="loading" @click="unlock">Unlock</t-button>
+                          <t-input v-model="password" type="password" placeholder="密码" clearable class="mb-4" @enter="unlock"></t-input>
+                          <t-button theme="primary" block :loading="loading" @click="unlock">解锁</t-button>
                           <t-alert v-if="error" theme="error" class="mt-4" :message="error"></t-alert>
-                          <p class="mt-4 text-xs leading-5 text-slate-500">Default password: mhc8180. Server listens only on 127.0.0.1:8180.</p>
+                          <p class="mt-4 text-xs leading-5 text-slate-500">默认密码：mhc8180。服务只监听 127.0.0.1:8180。</p>
                         </t-card>
                       </section>
 
@@ -406,17 +406,17 @@ public final class LocalControlPanelServer {
                         <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                           <div>
                             <div class="mb-2 text-xs font-semibold uppercase tracking-wider text-mhc-gold">127.0.0.1:8180</div>
-                            <h1 class="text-3xl font-bold tracking-normal text-white">MHC Control Panel</h1>
+                            <h1 class="text-3xl font-bold tracking-normal text-white">MHC 控制面板</h1>
                             <p class="mt-2 text-sm text-slate-400">{{ statusText }}</p>
                           </div>
                           <div class="flex gap-2">
-                            <t-button theme="default" @click="refresh" :loading="loading">Refresh</t-button>
-                            <t-button theme="danger" variant="outline" @click="logout">Lock</t-button>
+                            <t-button theme="default" @click="refresh" :loading="loading">刷新</t-button>
+                            <t-button theme="danger" variant="outline" @click="logout">锁定</t-button>
                           </div>
                         </div>
 
                         <t-card :bordered="true" class="mb-4">
-                          <div class="mb-3 text-base font-semibold text-white">Global settings</div>
+                          <div class="mb-3 text-base font-semibold text-white">全局设置</div>
                           <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                             <div v-for="setting in settings" :key="setting.id" class="rounded-md border border-slate-700/70 p-3">
                               <div class="mb-2 text-sm font-semibold text-slate-100">{{ setting.label }}</div>
@@ -442,14 +442,14 @@ public final class LocalControlPanelServer {
                                   <div class="mt-1 text-xs text-slate-500">{{ module.id }}</div>
                                 </div>
                                 <t-button :theme="module.enabled ? 'success' : 'danger'" :loading="busy[module.id]" @click="toggle(module.id)">
-                                  {{ module.enabled ? 'ON' : 'OFF' }}
+                                  {{ module.enabled ? '开' : '关' }}
                                 </t-button>
                               </div>
                               <div class="rounded-md border border-slate-700/70 p-2">
-                                <div class="mb-2 text-xs text-slate-400">Keybind: <span class="text-slate-100">{{ module.keyLabel }}</span></div>
+                                <div class="mb-2 text-xs text-slate-400">快捷键：<span class="text-slate-100">{{ module.keyLabel }}</span></div>
                                 <div class="flex flex-wrap gap-2">
-                                  <t-button size="small" theme="default" @click="listenBind(module)">{{ listeningId === module.id ? 'Press a key...' : 'Change key' }}</t-button>
-                                  <t-button size="small" theme="danger" variant="outline" @click="clearBind(module.id)">Clear</t-button>
+                                  <t-button size="small" theme="default" @click="listenBind(module)">{{ listeningId === module.id ? '请按键...' : '修改按键' }}</t-button>
+                                  <t-button size="small" theme="danger" variant="outline" @click="clearBind(module.id)">清除</t-button>
                                 </div>
                               </div>
                             </div>
@@ -485,7 +485,7 @@ public final class LocalControlPanelServer {
                           busy: {},
                           loading: false,
                           error: '',
-                          statusText: 'Waiting for module state',
+                          statusText: '等待模块状态',
                           listeningId: ''
                         };
                       },
@@ -503,7 +503,7 @@ public final class LocalControlPanelServer {
                         async unlock() {
                           this.error = '';
                           if (!this.password) {
-                            this.error = 'Enter password';
+                            this.error = '请输入密码';
                             return;
                           }
                           this.loading = true;
@@ -511,7 +511,7 @@ public final class LocalControlPanelServer {
                             await this.fetchState();
                             sessionStorage.setItem('mhc-panel-password', this.password);
                             this.unlocked = true;
-                            this.statusText = 'Connected';
+                            this.statusText = '已连接';
                           } catch (error) {
                             sessionStorage.removeItem('mhc-panel-password');
                             this.unlocked = false;
@@ -526,7 +526,7 @@ public final class LocalControlPanelServer {
                             headers: { ...this.authHeaders(), ...(options.headers || {}) },
                             cache: 'no-store'
                           });
-                          if (response.status === 401) throw new Error('Wrong password');
+                          if (response.status === 401) throw new Error('密码错误');
                           if (!response.ok) throw new Error('HTTP ' + response.status);
                           return await response.json();
                         },
@@ -542,7 +542,7 @@ public final class LocalControlPanelServer {
                           this.error = '';
                           try {
                             await this.fetchState();
-                            this.statusText = 'Last refresh: ' + new Date().toLocaleTimeString();
+                            this.statusText = '上次刷新：' + new Date().toLocaleTimeString();
                           } catch (error) {
                             this.error = error.message;
                           } finally {
@@ -569,7 +569,7 @@ public final class LocalControlPanelServer {
                           event.preventDefault();
                           const key = GLFW[event.code];
                           if (key === undefined) {
-                            this.error = 'Unsupported key: ' + event.code;
+                            this.error = '不支持的按键：' + event.code;
                             return;
                           }
                           const modifierCodes = ['ShiftLeft', 'ShiftRight', 'ControlLeft', 'ControlRight', 'AltLeft', 'AltRight', 'MetaLeft', 'MetaRight'];
