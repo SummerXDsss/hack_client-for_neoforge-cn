@@ -28,8 +28,6 @@ public class ModuleScreen extends Screen {
     }
 
     public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
-        renderBackground(gfx, mouseX, mouseY, partialTick);
-
         // Calculate dynamic height based on registry size + title space
         int totalModules = ModuleRegistry.MODULES.size();
         int dynamicHeight = 32 + (totalModules * 12);
@@ -163,5 +161,10 @@ public class ModuleScreen extends Screen {
             case "safewalk": com.wurstclient_v7.feature.SafeWalk.toggle(); break;
             case "lsd": LsdHack.toggle(); break;
         }
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
     }
 }
