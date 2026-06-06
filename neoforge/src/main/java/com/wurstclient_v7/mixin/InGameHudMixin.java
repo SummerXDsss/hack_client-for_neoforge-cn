@@ -2,12 +2,12 @@ package com.wurstclient_v7.mixin;
 
 import com.wurstclient_v7.feature.ModuleRegistry;
 import org.lwjgl.glfw.GLFW;
-import java.util.Map;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.resources.language.I18n;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,6 +15,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = Gui.class, remap = false)
 public class InGameHudMixin {
+    private static final String WATERMARK_KEY = "wurst_client_on_neoforge.hud.watermark";
+    private static final String ENABLED_MODULE_KEY = "wurst_client_on_neoforge.hud.enabled_module";
+    private static final String INPUT_FORWARD_KEY = "wurst_client_on_neoforge.input.forward";
+    private static final String INPUT_LEFT_KEY = "wurst_client_on_neoforge.input.left";
+    private static final String INPUT_BACK_KEY = "wurst_client_on_neoforge.input.back";
+    private static final String INPUT_RIGHT_KEY = "wurst_client_on_neoforge.input.right";
+    private static final String INPUT_JUMP_KEY = "wurst_client_on_neoforge.input.jump";
+    private static final String INPUT_MOUSE_LEFT_KEY = "wurst_client_on_neoforge.input.mouse_left";
+    private static final String INPUT_MOUSE_RIGHT_KEY = "wurst_client_on_neoforge.input.mouse_right";
 
     @Inject(method = "render", at = @At("TAIL"))
     private void onRender(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
@@ -26,7 +35,7 @@ public class InGameHudMixin {
         int color = 0xFF00FF00;
 
         // Draw Watermark
-        guiGraphics.drawString(mc.font, "My Hack Client For 1.21.1 NeoForge v1.0", x, y, 0xFFFFFFFF, true);
+        guiGraphics.drawString(mc.font, I18n.get(WATERMARK_KEY), x, y, 0xFFFFFFFF, true);
         y += 12;
 
         // Input HUD
@@ -41,39 +50,34 @@ public class InGameHudMixin {
         int spacing = 5;
 
 // W on top
-        drawKeyBox(guiGraphics, mc.font, window, "W", GLFW.GLFW_KEY_W,
+        drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_FORWARD_KEY), GLFW.GLFW_KEY_W,
                 baseX + boxW + spacing, baseY, false, pressedColor, idleColor);
 
 // A S D row
-        drawKeyBox(guiGraphics, mc.font, window, "A", GLFW.GLFW_KEY_A,
+        drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_LEFT_KEY), GLFW.GLFW_KEY_A,
                 baseX, baseY + boxH + spacing, false, pressedColor, idleColor);
 
-        drawKeyBox(guiGraphics, mc.font, window, "S", GLFW.GLFW_KEY_S,
+        drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_BACK_KEY), GLFW.GLFW_KEY_S,
                 baseX + boxW + spacing, baseY + boxH + spacing, false, pressedColor, idleColor);
 
-        drawKeyBox(guiGraphics, mc.font, window, "D", GLFW.GLFW_KEY_D,
+        drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_RIGHT_KEY), GLFW.GLFW_KEY_D,
                 baseX + (boxW + spacing) * 2, baseY + boxH + spacing, false, pressedColor, idleColor);
 
 // SPACE below
-        drawKeyBox(guiGraphics, mc.font, window, "SPACE", GLFW.GLFW_KEY_SPACE,
+        drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_JUMP_KEY), GLFW.GLFW_KEY_SPACE,
                 baseX, baseY + (boxH + spacing) * 2, false, pressedColor, idleColor);
 
         //MOUSE BUTTONS
-        drawKeyBox(guiGraphics, mc.font, window, "MOUSE_L", GLFW.GLFW_MOUSE_BUTTON_LEFT,
+        drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_MOUSE_LEFT_KEY), GLFW.GLFW_MOUSE_BUTTON_LEFT,
                 baseX + (boxW + spacing) * 3, baseY, true, pressedColor, idleColor);
 
-        drawKeyBox(guiGraphics, mc.font, window, "MOUSE_R", GLFW.GLFW_MOUSE_BUTTON_RIGHT,
+        drawKeyBox(guiGraphics, mc.font, window, I18n.get(INPUT_MOUSE_RIGHT_KEY), GLFW.GLFW_MOUSE_BUTTON_RIGHT,
                 baseX + (boxW + spacing) * 3, baseY + boxH + spacing, true, pressedColor, idleColor);
 
-        String[] modules = {
-                "AndromedaBridge", "AutoAttack", "ESP", "Flight",
-                "FullBright", "Jetpack", "KillAura",
-                "NoFall", "Nuker", "SpeedHack", "Spider", "Tracers", "XRay", "SafeWalk", "GodMode", "Glide", "Freecam", "LSD", "Jesus", "AirPlace", "BoatFly", "HealthTags"
-        };
-
-        for (Map.Entry<String, ModuleRegistry.ModuleToggle> entry : ModuleRegistry.MODULES.entrySet()) {
-            if (entry.getValue().isEnabled()) {
-                guiGraphics.drawString(mc.font, "[+] " + entry.getKey(), x, y, color, true);
+        for (ModuleRegistry.Module module : ModuleRegistry.MODULES.values()) {
+            if (module.isEnabled()) {
+                String moduleName = I18n.get(module.translationKey());
+                guiGraphics.drawString(mc.font, I18n.get(ENABLED_MODULE_KEY, moduleName), x, y, color, true);
                 y += 10;
             }
         }

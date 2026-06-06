@@ -1,14 +1,19 @@
 package com.wurstclient_v7.gui;
 
-import java.util.Map;
 import com.wurstclient_v7.config.NeoForgeConfigManager;
 import com.wurstclient_v7.feature.*;
 import com.wurstclient_v7.input.KeybindManager;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 
 public class ModuleScreen extends Screen {
+    private static final String TITLE_KEY = "wurst_client_on_neoforge.screen.modules.title";
+    private static final String STATUS_ON_KEY = "wurst_client_on_neoforge.state.on";
+    private static final String STATUS_OFF_KEY = "wurst_client_on_neoforge.state.off";
+    private static final String LISTENING_KEY = "wurst_client_on_neoforge.binding.listening";
+
     private final int WIDTH = 120;
 
     private final int HEIGHT = 262;
@@ -18,7 +23,7 @@ public class ModuleScreen extends Screen {
     private String listeningAction;
 
     public ModuleScreen() {
-        super((Component)Component.literal("My hack client"));
+        super(Component.translatable(TITLE_KEY));
         this.listeningAction = null;
         System.out.println("[DEBUG] ModuleScreen constructor called.");
     }
@@ -44,15 +49,15 @@ public class ModuleScreen extends Screen {
         int lineY = y + 24;
 
         // ONLY use the loop. Do not hard-code kill-aura, speedhack, etc. here.
-        for (Map.Entry<String, ModuleRegistry.ModuleToggle> entry : ModuleRegistry.MODULES.entrySet()) {
-            String modName = entry.getKey();
-            boolean enabled = entry.getValue().isEnabled();
+        for (ModuleRegistry.Module module : ModuleRegistry.MODULES.values()) {
+            String label = I18n.get(module.translationKey());
+            boolean enabled = module.isEnabled();
 
             // Use your existing renderModule helper
-            renderModule(gfx, x, lineY, modName.toLowerCase(), enabled, modName.toLowerCase() + "_toggle");
+            renderModule(gfx, x, lineY, label, enabled, module.actionKey());
 
             // Special case for speedhack multiplier display if you want it
-            if (modName.equalsIgnoreCase("speedhack")) {
+            if (module.id().equals("speed_hack")) {
                 double shMult = NeoForgeConfigManager.getDouble("speed.multiplier", 1.5D);
                 String shMultText = String.format("x%.2f", shMult);
                 gfx.drawString(this.font, shMultText, x + WIDTH - 45 - this.font.width(shMultText), lineY, -3355444, false);
@@ -65,10 +70,10 @@ public class ModuleScreen extends Screen {
     }
 
     private void renderModule(GuiGraphics gfx, int x, int y, String label, boolean enabled, String action) {
-        String status = enabled ? "ON" : "OFF";
+        String status = I18n.get(enabled ? STATUS_ON_KEY : STATUS_OFF_KEY);
         gfx.drawString(this.font, label, x + 8, y, -1, false);
         gfx.drawString(this.font, status, x + 120 - 8 - this.font.width(status) - 40, y, enabled ? -10027162 : -39322, false);
-        String binding = (this.listeningAction != null && this.listeningAction.equals(action)) ? "Press any key..." : KeybindManager.getLabel(action);
+        String binding = (this.listeningAction != null && this.listeningAction.equals(action)) ? I18n.get(LISTENING_KEY) : KeybindManager.getLabel(action);
         gfx.drawString(this.font, binding, x + 120 - 8 - this.font.width(binding), y, -86, false);
     }
 
@@ -85,15 +90,14 @@ public class ModuleScreen extends Screen {
         int y = (this.height - dynamicHeight) / 2;
         int lineY = y + 24;
 
-        for (Map.Entry<String, ModuleRegistry.ModuleToggle> entry : ModuleRegistry.MODULES.entrySet()) {
-            String modName = entry.getKey();
-            String action = modName.toLowerCase() + "_toggle";
+        for (ModuleRegistry.Module module : ModuleRegistry.MODULES.values()) {
+            String action = module.actionKey();
 
             // Check if we clicked the toggle or the bind area
 // Check if we clicked the toggle or the bind area
             if (checkClick(mouseX, mouseY, x, lineY)) {
                 // 1. Get the toggle logic using a switch or if/else block
-                toggleModuleByName(modName);
+                module.toggle();
                 return true;
             }
 
@@ -141,28 +145,6 @@ public class ModuleScreen extends Screen {
             return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
-    }
-
-    private void toggleModuleByName(String name) {
-        switch (name.toLowerCase()) {
-            case "killaura": KillAura.toggle(); break;
-            case "autoattack": AutoAttack.toggle(); break;
-            case "speedhack": SpeedHack.toggle(); break;
-            case "fullbright": FullBright.toggle(); break;
-            case "flight": Flight.toggle(); break;
-            case "nofall": NoFall.toggle(); break;
-            case "xray": XRay.toggle(); break;
-            case "jetpack": Jetpack.toggle(); break;
-            case "nuker": Nuker.toggle(); break;
-            case "spider": Spider.toggle(); break;
-            case "esp": ESP.toggle(); break;
-            case "tracers": Tracers.toggle(); break;
-            case "andromeda": AndromedaBridge.toggle(); break;
-            case "safewalk": SafeWalk.toggle(); break;
-            case "godmode": GodMode.toggle(); break;
-            case "lsd": LsdHack.toggle(); break;
-            case "healthtags": HealthTagsMain.toggle(); break;
-        }
     }
 
     @Override

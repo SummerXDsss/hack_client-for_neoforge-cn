@@ -9,9 +9,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
+import net.minecraft.client.resources.language.I18n;
 import org.lwjgl.glfw.GLFW;
 
 public final class KeybindManager {
+    private static final String LANG_PREFIX = "wurst_client_on_neoforge.key.";
+
     private static final class Keybind {
         public final boolean isMouse;
 
@@ -87,83 +90,42 @@ public final class KeybindManager {
 
     public static String keyName(int key) {
         if (key == -1)
-            return "NONE";
-        switch (key) {
-            case 345:
-                return "RCTRL";
-            case 341:
-                return "LCTRL";
-            case 344:
-                return "RSHIFT";
-            case 340:
-                return "LSHIFT";
-            case 346:
-                return "RALT";
-            case 342:
-                return "LALT";
-            case 347:
-                return "RSUPER";
-            case 343:
-                return "LSUPER";
-        }
+            return tr("none");
+        String specialName = specialKeyName(key);
+        if (specialName != null)
+            return specialName;
         String name = GLFW.glfwGetKeyName(key, 0);
         if (name != null && !name.isEmpty())
             return name.toUpperCase();
-        return "KEY_" + key;
+        return I18n.get(LANG_PREFIX + "keyboard_unknown", key);
     }
 
     public static String keybindLabel(Keybind kb) {
         if (kb == null)
-            return "NONE";
+            return tr("none");
         StringBuilder sb = new StringBuilder();
         if ((kb.modifiers & 0x2) != 0)
-            sb.append("CTRL+");
+            sb.append(tr("modifier.ctrl"));
         if ((kb.modifiers & 0x1) != 0)
-            sb.append("SHIFT+");
+            sb.append(tr("modifier.shift"));
         if ((kb.modifiers & 0x4) != 0)
-            sb.append("ALT+");
+            sb.append(tr("modifier.alt"));
         if ((kb.modifiers & 0x8) != 0)
-            sb.append("SUPER+");
+            sb.append(tr("modifier.super"));
         if (kb.isMouse) {
             switch (kb.key) {
                 case 0:
-                    sb.append("MOUSE_L");
+                    sb.append(tr("mouse.left"));
                     return sb.toString();
                 case 1:
-                    sb.append("MOUSE_R");
+                    sb.append(tr("mouse.right"));
                     return sb.toString();
                 case 2:
-                    sb.append("MOUSE_M");
+                    sb.append(tr("mouse.middle"));
                     return sb.toString();
             }
-            sb.append("MOUSE_").append(kb.key);
+            sb.append(I18n.get(LANG_PREFIX + "mouse_unknown", kb.key));
         } else {
-            switch (kb.key) {
-                case 345:
-                    sb.append("RCTRL");
-                    return sb.toString();
-                case 341:
-                    sb.append("LCTRL");
-                    return sb.toString();
-                case 344:
-                    sb.append("RSHIFT");
-                    return sb.toString();
-                case 340:
-                    sb.append("LSHIFT");
-                    return sb.toString();
-                case 346:
-                    sb.append("RALT");
-                    return sb.toString();
-                case 342:
-                    sb.append("LALT");
-                    return sb.toString();
-                case 347:
-                    sb.append("RSUPER");
-                    return sb.toString();
-                case 343:
-                    sb.append("LSUPER");
-                    return sb.toString();
-            }
             sb.append(keyName(kb.key));
         }
         return sb.toString();
@@ -249,5 +211,32 @@ public final class KeybindManager {
         } catch (IOException e) {
             System.err.println("Failed to save keybinds: " + e.getMessage());
         }
+    }
+
+    private static String specialKeyName(int key) {
+        switch (key) {
+            case 345:
+                return tr("right_control");
+            case 341:
+                return tr("left_control");
+            case 344:
+                return tr("right_shift");
+            case 340:
+                return tr("left_shift");
+            case 346:
+                return tr("right_alt");
+            case 342:
+                return tr("left_alt");
+            case 347:
+                return tr("right_super");
+            case 343:
+                return tr("left_super");
+            default:
+                return null;
+        }
+    }
+
+    private static String tr(String key) {
+        return I18n.get(LANG_PREFIX + key);
     }
 }
