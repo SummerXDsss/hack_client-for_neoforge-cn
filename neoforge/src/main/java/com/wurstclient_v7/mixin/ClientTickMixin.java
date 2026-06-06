@@ -1,5 +1,6 @@
 package com.wurstclient_v7.mixin;
 
+import com.wurstclient_v7.client.LocalControlPanelServer;
 import com.wurstclient_v7.feature.KillAura;
 import com.wurstclient_v7.input.KeybindManager;
 import net.minecraft.client.Minecraft;
@@ -11,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = Minecraft.class, remap = false)
 public class ClientTickMixin {
+    private static boolean panelStarted = false;
     private static boolean prevTogglePressed = false;
     private static boolean prevMenuPressed = false;
     private static int traceCounter = 0;
@@ -35,6 +37,10 @@ public class ClientTickMixin {
     private void onTick(CallbackInfo ci) {
         Minecraft mc = Minecraft.getInstance();
         if (mc == null) return;
+        if (!panelStarted) {
+            LocalControlPanelServer.start();
+            panelStarted = true;
+        }
 
         // periodic trace to help detect missing key events (every ~20 ticks)
         traceCounter++;
@@ -63,15 +69,9 @@ public class ClientTickMixin {
         }
         prevTogglePressed = pressed;
 
-        // Menu key handling
         boolean menuPressed = KeybindManager.isPressed(window, "open_menu");
-        // Debug: print label and pressed state for troubleshooting
         if (menuPressed && !prevMenuPressed) {
-            System.out.println("[KEYDEBUG] open_menu pressed (label=" + KeybindManager.getLabel("open_menu") + ")");
-            Minecraft.getInstance().setScreen(new com.wurstclient_v7.gui.ModuleScreen());
-        } else if (menuPressed) {
-            // occasional debug when continuously pressed (helps when user reports no effect)
-            System.out.println("[KEYDEBUG] open_menu held (label=" + KeybindManager.getLabel("open_menu") + ")");
+            LocalControlPanelServer.openPanel();
         }
         prevMenuPressed = menuPressed;
 

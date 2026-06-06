@@ -36,6 +36,7 @@ public final class NeoForgeConfigManager {
         PROPS.setProperty("spider.enabled", "false");
         PROPS.setProperty("xray.enabled", "false");
         PROPS.setProperty("tracers.enabled", "false");
+        PROPS.setProperty("panel.password", "mhc8180");
 
         PROPS.setProperty("speed.multiplier", "1.5"); load();
     }
@@ -80,6 +81,16 @@ public final class NeoForgeConfigManager {
 
     public static void setDouble(String key, double val) {
         PROPS.setProperty(key, Double.toString(val));
+        save();
+    }
+
+    public static String getString(String key, String defaultVal) {
+        String s = PROPS.getProperty(key);
+        return s != null ? s : defaultVal;
+    }
+
+    public static void setString(String key, String val) {
+        PROPS.setProperty(key, val);
         save();
     }
 }
