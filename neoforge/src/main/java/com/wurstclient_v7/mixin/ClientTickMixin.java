@@ -192,16 +192,6 @@ public class ClientTickMixin {
         }
         prevLeftPressed = leftPressed;
 
-        // SafeWalk Execution Logic
-        if (com.wurstclient_v7.feature.SafeWalk.isEnabled()) {
-            if (mc.player != null && mc.player.onGround()) {
-                mc.options.keyShift.setDown(true);
-            }
-        } else {
-            mc.options.keyShift.setDown(false);
-        }
-
-
         // Call feature tick handler
         KillAura.onClientTick();
         // SpeedHack tick handler (applies boosts when movement begins)
