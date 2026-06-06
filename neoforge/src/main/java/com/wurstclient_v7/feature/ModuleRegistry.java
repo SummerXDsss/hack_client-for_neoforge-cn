@@ -20,7 +20,6 @@ public final class ModuleRegistry {
 		register("nuker", "nuker_toggle", Nuker::isEnabled, Nuker::toggle);
 		register("spider", "spider_toggle", Spider::isEnabled, Spider::toggle);
 		register("esp", "esp_toggle", ESP::isEnabled, ESP::toggle);
-		register("tracers", "tracers_toggle", Tracers::isEnabled, Tracers::toggle);
 		register("andromeda_bridge", "andromeda_toggle", AndromedaBridge::isEnabled, AndromedaBridge::toggle);
 		register("safe_walk", "safewalk_toggle", SafeWalk::isEnabled, SafeWalk::toggle);
 		register("god_mode", "godmode_toggle", GodMode::isEnabled, GodMode::toggle);

@@ -10,6 +10,10 @@
   - 删除实体渲染血量标签 mixin。
   - 删除相关配置项和语言项。
   - 已确认构建后的 jar 内没有 `HealthTags`、`HealthTag`、`EntityRendererMixin` 残留。
+- 移除会导致闪退的 `Tracers` 功能。
+  - 删除网页面板中的 `tracers` 模块入口。
+  - 删除快捷键轮询和渲染事件入口。
+  - 删除相关配置项和语言项。
 - 修复鼠标左键检测导致的 `65539: Invalid key 0` 刷屏问题。
   - 鼠标按钮检测统一改为 `glfwGetMouseButton`。
   - 左键不再被当作键盘按键检测。

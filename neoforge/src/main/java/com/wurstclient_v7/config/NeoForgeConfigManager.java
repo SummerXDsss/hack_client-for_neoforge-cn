@@ -37,7 +37,6 @@ public final class NeoForgeConfigManager {
         PROPS.setProperty("speed.enabled", "false");
         PROPS.setProperty("spider.enabled", "false");
         PROPS.setProperty("xray.enabled", "false");
-        PROPS.setProperty("tracers.enabled", "false");
         PROPS.setProperty("panel.password", "mhc8180");
 
         PROPS.setProperty("speed.multiplier", "1.5"); load();

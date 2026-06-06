@@ -27,7 +27,6 @@ public class ClientTickMixin {
     private static boolean prevNukerPressed = false;
     private static boolean prevSpiderPressed = false;
     private static boolean prevESPPressed = false;
-    private static boolean prevTracersPressed = false;
     private static boolean prevAndromedaPressed = false;
     private static boolean prevSafeWalkPressed = false;
     private static boolean prevGodModePressed = false;
@@ -153,14 +152,6 @@ public class ClientTickMixin {
             System.out.println("ESP toggled: " + (com.wurstclient_v7.feature.ESP.isEnabled() ? "ON" : "OFF"));
         }
         prevESPPressed = espPressed;
-
-        // Tracers toggle key
-        boolean tracersPressed = KeybindManager.isPressed(window, "tracers_toggle");
-        if (tracersPressed && !prevTracersPressed) {
-            com.wurstclient_v7.feature.Tracers.toggle();
-            System.out.println("Tracers toggled: " + (com.wurstclient_v7.feature.Tracers.isEnabled() ? "ON" : "OFF"));
-        }
-        prevTracersPressed = tracersPressed;
 
         // Andromeda Bridge toggle key
         boolean andromedaPressed = KeybindManager.isPressed(window, "andromeda_toggle");
